@@ -5,6 +5,7 @@ import {
   createProductSchema,
   updateProductSchema,
 } from '../schemas/productSchema.js';
+import { isValidUUID } from '../utils.ts/index.js';
 
 export const getAllProducts = async (
   _request: FastifyRequest,
@@ -29,6 +30,10 @@ export const getProductById = async (
 ) => {
   const productId = request.params.id;
 
+  if (!isValidUUID(productId)) {
+    reply.code(400).send({ message: 'Bad id' });
+  }
+
   const product = await ProductService.findProductById(productId);
   if (!product) {
     reply.code(404).send({ message: 'Not Found' });
@@ -42,6 +47,10 @@ export const deleteProductById = async (
 ) => {
   const productId = request.params.id;
 
+  if (!isValidUUID(productId)) {
+    reply.code(400).send({ message: 'Bad id' });
+  }
+
   const result = await ProductService.removeProductById(productId);
   if (!result) {
     reply.code(404).send({ message: 'Not Found' });
@@ -54,6 +63,11 @@ export const putProductById = async (
   reply: FastifyReply,
 ) => {
   const productId = request.params.id;
+
+  if (!isValidUUID(productId)) {
+    reply.code(400).send({ message: 'Bad id' });
+  }
+
   const validatedBody = updateProductSchema.parse(request.body);
   const updatedProduct = await ProductService.updateProductById(
     productId,
