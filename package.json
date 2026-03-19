@@ -1,0 +1,35 @@
+{
+  "name": "nodejs-rs-2026-task-3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start:dev": "nodemon --watch \"src\" --ext \"ts,json\" --exec \"tsx src/server.ts\"",
+    "start:prod": "tsc && node dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ertg08140/NodeJS-RS-2026-Task-3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/ertg08140/NodeJS-RS-2026-Task-3/issues"
+  },
+  "homepage": "https://github.com/ertg08140/NodeJS-RS-2026-Task-3#readme",
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@fastify/autoload": "^6.3.1",
+    "@fastify/reply-from": "^12.6.1",
+    "dotenv": "^17.3.1",
+    "fastify": "^5.8.2",
+    "nodemon": "^3.1.14",
+    "zod": "^4.3.6"
+  }
+}
