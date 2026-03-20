@@ -5,7 +5,7 @@ import { availableParallelism } from 'node:os';
 
 import type { Cluster } from 'node:cluster';
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.CLUSTER_SERVER_PORT) || 3000;
 const numWorkers = availableParallelism() - 1;
 
 export const startCluster = (cluster: Cluster) => {

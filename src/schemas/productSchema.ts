@@ -7,36 +7,28 @@ const SHOULD_BE_BOOLEAN_ERROR_MESSAGE = 'Should be boolean';
 
 export const baseProductSchema = z.object({
   id: z.string(),
-  name: z
-    .string({
-      error: REQUIRED_ERROR_MESSAGE,
-    })
-    .min(2)
-    .max(100),
-  description: z
-    .string({
-      error: REQUIRED_ERROR_MESSAGE,
-    })
-    .min(2),
+  name: z.string({
+    error: REQUIRED_ERROR_MESSAGE,
+  }),
+
+  description: z.string({
+    error: REQUIRED_ERROR_MESSAGE,
+  }),
+
   price: z
     .number({
       error: (iss) =>
-        iss.input === undefined
-          ? REQUIRED_ERROR_MESSAGE
-          : SHOULD_BE_NUMBER_ERROR_MESSAGE,
+        !iss.input ? REQUIRED_ERROR_MESSAGE : SHOULD_BE_NUMBER_ERROR_MESSAGE,
     })
-    .positive({ message: PRICE_VALUE_ERROR_MESSAGE }),
+    .positive({ error: PRICE_VALUE_ERROR_MESSAGE }),
 
-  category: z
-    .string({
-      error: REQUIRED_ERROR_MESSAGE,
-    })
-    .min(2),
+  category: z.string({
+    error: REQUIRED_ERROR_MESSAGE,
+  }),
+
   inStock: z.boolean({
     error: (iss) =>
-      iss.input === undefined
-        ? REQUIRED_ERROR_MESSAGE
-        : SHOULD_BE_BOOLEAN_ERROR_MESSAGE,
+      !iss.input ? REQUIRED_ERROR_MESSAGE : SHOULD_BE_BOOLEAN_ERROR_MESSAGE,
   }),
 });
 

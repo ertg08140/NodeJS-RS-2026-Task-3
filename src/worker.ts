@@ -4,14 +4,21 @@ import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import path from 'path';
 import { fileURLToPath } from 'node:url';
+import type { FastifyInstance } from 'fastify';
 import {
   serializerCompiler,
   validatorCompiler,
   hasZodFastifySchemaValidationErrors,
 } from 'fastify-type-provider-zod';
+import 'dotenv/config';
 
-export const startWorker = async () => {
-  const fastify = Fastify({ logger: true }).withTypeProvider();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+export const initializeFastifyServer = async (
+  logger: boolean = true,
+): Promise<FastifyInstance> => {
+  const fastify = Fastify({ logger }).withTypeProvider();
 
   fastify.setValidatorCompiler(validatorCompiler);
   fastify.setSerializerCompiler(serializerCompiler);
@@ -29,11 +36,6 @@ export const startWorker = async () => {
     reply.send(error);
   });
 
-  const workerPort = parseInt(process.env.WORKER_PORT!);
-
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = path.dirname(__filename);
-
   await fastify.register(swagger, {
     openapi: {
       info: { title: 'RS-NodeJS-Task-3', version: '1.0' },
@@ -49,7 +51,17 @@ export const startWorker = async () => {
     options: { prefix: '/api/products' },
   });
 
-  fastify.listen({ port: workerPort }, () => {
+  return fastify;
+};
+
+export const startWorker = async () => {
+  const fastify = await initializeFastifyServer(true);
+
+  const workerPort = process.env.WORKER_PORT || process.env.SINGLE_SERVER_PORT;
+
+  console.log('object');
+
+  fastify.listen({ port: parseInt(workerPort!) }, () => {
     console.log(`Worker ${process.pid} started on port ${workerPort}`);
   });
 };
