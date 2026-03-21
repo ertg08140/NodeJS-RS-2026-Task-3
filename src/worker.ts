@@ -59,8 +59,6 @@ export const startWorker = async () => {
 
   const workerPort = process.env.WORKER_PORT || process.env.SINGLE_SERVER_PORT;
 
-  console.log('object');
-
   fastify.listen({ port: parseInt(workerPort!) }, () => {
     console.log(`Worker ${process.pid} started on port ${workerPort}`);
   });
